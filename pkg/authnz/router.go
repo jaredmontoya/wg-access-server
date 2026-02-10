@@ -58,7 +58,8 @@ func New(config authconfig.AuthConfig, claimsMiddleware authsession.ClaimsMiddle
 		}
 	}
 	store := sessions.NewCookieStore(storeSecret)
-	runtime := authruntime.NewProviderRuntime(store)
+	secureStore := authsession.NewSecureCookieStore(store)
+	runtime := authruntime.NewProviderRuntime(secureStore)
 	providers := config.Providers()
 
 	for _, p := range providers {
