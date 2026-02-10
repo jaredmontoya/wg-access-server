@@ -33,6 +33,7 @@ import (
 	"github.com/freifunkMUC/wg-access-server/internal/storage"
 	"github.com/freifunkMUC/wg-access-server/pkg/authnz"
 	"github.com/freifunkMUC/wg-access-server/pkg/authnz/authconfig"
+	"github.com/freifunkMUC/wg-access-server/pkg/authnz/authsession"
 )
 
 func Register(app *kingpin.Application) *servecmd {
@@ -241,6 +242,7 @@ func (cmd *servecmd) Run() {
 	router := mux.NewRouter()
 	router.Use(services.TracesMiddleware)
 	router.Use(services.RecoveryMiddleware)
+	router.Use(authsession.CookieSecureMiddleware)
 
 	// Health check endpoint
 	router.PathPrefix("/health").Handler(services.HealthEndpoint(deviceManager))
